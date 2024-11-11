@@ -36,13 +36,13 @@ The project includes the `GlpiProvider` class in `glpi_provider`, which encapsul
 To configure the connection to the GLPI API, create a `.env` file in the project root directory with the following variables:
 
 ```env
-BASE_URL='BASE_URL'
-USER_TOKEN='USER_TOKEN'
-TICKET_STATUS=[1, 2, 3, 4]
+GLPI_BASE_URL='GLPI_BASE_URL'
+GLPI_USER_TOKEN='GLPI_USER_TOKEN'
+GLPI_TICKET_STATUS=[1, 2, 3, 4]
 ```
-  - `BASE_URL`: The base URL for the GLPI API.
-  - `USER_TOKEN`: The user token for authenticating API requests.
-  - `TICKET_STATUS`: A list of ticket statuses to filter tickets when calling methods like get_open_tickets().
+  - `GLPI_BASE_URL`: The base URL for the GLPI API.
+  - `GLPI_USER_TOKEN`: The user token for authenticating API requests.
+  - `GLPI_TICKET_STATUS`: A list of ticket statuses to filter tickets when calling methods like get_open_tickets().
 
 ## Usage Example
 
