@@ -1,7 +1,6 @@
-from models import Entity, Ticket, User
-from services.glpi_service import GlpiService
-from settings import BASE_URL, USER_TOKEN
-
+from glpi_provider.models import Entity, Ticket, User
+from glpi_provider.services.glpi_service import GlpiService
+from glpi_provider.settings import BASE_URL, USER_TOKEN
 
 
 class GlpiProvider:

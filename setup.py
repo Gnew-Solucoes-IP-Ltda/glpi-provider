@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 lib_folder = os.path.dirname(os.path.realpath(__file__))
@@ -15,8 +15,8 @@ with open("README.md", "r") as arq:
     readme = arq.read()
 
 setup(
-    name='glpi_provider',
-    version='0.0.1',
+    name='glpi-provider',
+    version='0.0.5',
     license='MIT License',
     author='Tatianno Alves',
     long_description=readme,
@@ -24,6 +24,6 @@ setup(
     author_email='tferreiraalves@gmail.com',
     keywords='glpi provider api rest',
     description=u'GLPI API Abstraction Layer',
-    packages=['glpi_provider'],
+    packages=find_packages(include=['glpi_provider', 'glpi_provider.*']),
     install_requires=install_requires,
 )

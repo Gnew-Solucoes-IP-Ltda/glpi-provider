@@ -1,5 +1,5 @@
 from unittest import TestCase
-from models import User
+from glpi_provider.models import User
 
 
 class UserTestCase(TestCase):

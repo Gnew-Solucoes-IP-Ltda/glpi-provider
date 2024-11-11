@@ -1,7 +1,7 @@
 from datetime import datetime
 from dataclasses import dataclass
-from models.entity import Entity
-from models.user import User
+from .entity import Entity
+from .user import User
 
 
 @dataclass

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from models import Entity
+from glpi_provider.models import Entity
 
 
 class EntityTestCase(TestCase):

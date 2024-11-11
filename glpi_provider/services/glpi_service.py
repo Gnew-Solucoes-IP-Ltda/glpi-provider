@@ -1,6 +1,6 @@
 import json, requests
-from utils.url import url_transform
-from settings import TICKET_STATUS
+from glpi_provider.utils.url import url_transform
+from glpi_provider.settings import TICKET_STATUS
 
 
 class GlpiServiceException(Exception):

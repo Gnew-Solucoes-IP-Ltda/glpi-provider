@@ -1,6 +1,6 @@
 from datetime import datetime
 from unittest import TestCase
-from models import Entity, Ticket
+from glpi_provider.models import Entity, Ticket
 
 
 class TicketTestCase(TestCase):

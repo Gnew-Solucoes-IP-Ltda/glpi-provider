@@ -1,5 +1,5 @@
 from unittest import TestCase
-from utils.url import url_transform
+from glpi_provider.utils.url import url_transform
 
 
 class UrlTransformTestCase(TestCase):

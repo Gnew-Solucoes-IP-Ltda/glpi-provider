@@ -1,10 +1,10 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
-from models import Entity, Ticket, User
-from providers import GlpiProvider
-from tests.constants.entities_responses import ENTITY_RESPONSE, ENTITIES_RESPONSE
-from tests.constants.tickets_responses import TICKET_REPONSE, TICKETS_RESPONSE, TICKET_OPEN_RESPONSE
-from tests.constants.users_responses import USER_RESPONSE, USERS_RESPONSE
+from glpi_provider.models import Entity, Ticket, User
+from glpi_provider.providers.glpi_provider import GlpiProvider
+from glpi_provider.tests.constants.entities_responses import ENTITY_RESPONSE, ENTITIES_RESPONSE
+from glpi_provider.tests.constants.tickets_responses import TICKET_REPONSE, TICKETS_RESPONSE, TICKET_OPEN_RESPONSE
+from glpi_provider.tests.constants.users_responses import USER_RESPONSE, USERS_RESPONSE
 
 
 class GlpiProviderTestCase(TestCase):
