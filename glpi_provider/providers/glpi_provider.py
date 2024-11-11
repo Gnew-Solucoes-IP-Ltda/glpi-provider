@@ -1,11 +1,12 @@
 from models import Entity, Ticket, User
 from services.glpi_service import GlpiService
+from settings import BASE_URL, USER_TOKEN
 
 
 
 class GlpiProvider:
 
-    def __init__(self, service: GlpiService) -> None:
+    def __init__(self, service=GlpiService(BASE_URL, USER_TOKEN)) -> None:
         self.service = service
     
     def get_entity(self, entity_id: int) -> Entity:
@@ -34,25 +35,13 @@ class GlpiProvider:
         
         return tickets
     
-    def get_open_tickets(self) -> list[Ticket]:
+    def get_open_tickets(self) -> list[dict]:
         tickets = []
 
         for data in self.service.get_open_tickets().get('data', []):
-            ticket_id, user_id = self._parser_open_ticket_data(data)
-            ticket_data = self.service.get_ticket(ticket_id)
-            ticket_data, entity_id = self._parser_ticket_data(ticket_data)
-            tickets.append(self._create_ticket(ticket_data, entity_id, user_id))
+            tickets.append(self._parser_open_ticket_data(data))
         
         return tickets
-    
-    def get_open_tickets_ids(self) -> list[int]:
-        ticket_ids = []
-
-        for data in self.service.get_open_tickets().get('data', []):
-            ticket_id, user_id = self._parser_open_ticket_data(data)
-            ticket_ids.append(ticket_id)
-        
-        return ticket_ids
     
     def get_user(self, user_id: int) -> User:
         user_data = self._parser_user_data(self.service.get_user(user_id))
@@ -111,9 +100,14 @@ class GlpiProvider:
         )
     
     def _parser_open_ticket_data(self, data: dict) -> tuple[int, int]:
-        ticket_id = data.get("2")
-        user_id = data.get("5")
-        return (ticket_id, user_id)
+        ticket_data = {
+            'id': data.get("2"),
+            'content': data.get("1"),
+            'owner_id': data.get("5"),
+            'status_id': data.get("12"),
+            'entity_id': data.get("80")
+        }
+        return ticket_data
     
     def _parser_user_data(self, data: dict) -> dict:
         return {

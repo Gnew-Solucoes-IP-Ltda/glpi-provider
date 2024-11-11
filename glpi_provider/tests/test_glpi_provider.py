@@ -90,8 +90,14 @@ class GlpiProviderTestCase(TestCase):
         self.assertEqual(entity_id, 0)
 
     def test_parser_open_ticket_data(self):
-        expected_data = (12835, 8)
+        expected_data = {
+            'id': 12835,
+            'content': "VERIFICAR CONSISTENCIAS DE UMA CONSULTA PASSADA PELO CLIENTE. CONTATO:",
+            'owner_id': 8,
+            'status_id': 4,
+            'entity_id': "GNEW > CASTIQUINI & OLIVEIRA LTDA - ME > UNIMED PRESIDENTE PRUDENTE"
+        }
         service = MagicMock()
         provider = GlpiProvider(service)
-        ticket_id, user_id = provider._parser_open_ticket_data(TICKET_OPEN_RESPONSE)
-        self.assertTupleEqual((ticket_id, user_id), expected_data)
+        ticket_data = provider._parser_open_ticket_data(TICKET_OPEN_RESPONSE)
+        self.assertDictEqual(ticket_data, expected_data)
