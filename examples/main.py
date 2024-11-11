@@ -1,4 +1,4 @@
-from providers.glpi_provider import GlpiProvider
+from glpi_provider import GlpiProvider
 
 
 provider = GlpiProvider()
