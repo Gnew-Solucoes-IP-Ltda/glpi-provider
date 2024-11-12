@@ -1,6 +1,5 @@
 import json, requests
 from glpi_provider.utils.url import url_transform
-from glpi_provider.settings import TICKET_STATUS
 
 
 class GlpiServiceException(Exception):
@@ -11,12 +10,12 @@ class GlpiServiceException(Exception):
 
 class GlpiService:
 
-    def __init__(self, base_url: str, user_token: str, requests_lib: requests = requests) -> None:
+    def __init__(self, base_url: str, user_token: str, status_open: list, requests_lib: requests = requests) -> None:
         self.base_url = url_transform(base_url)
         self._user_token = user_token
         self._requests = requests_lib
         self._session_token: str = None
-        self._ticket_open_status = TICKET_STATUS
+        self._ticket_open_status = status_open
 
     def create_session(self) -> None:
         self._create_session_token()

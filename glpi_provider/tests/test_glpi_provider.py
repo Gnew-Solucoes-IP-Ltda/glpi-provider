@@ -95,7 +95,7 @@ class GlpiProviderTestCase(TestCase):
             'content': "VERIFICAR CONSISTENCIAS DE UMA CONSULTA PASSADA PELO CLIENTE. CONTATO:",
             'owner_id': 8,
             'status_id': 4,
-            'entity_id': "GNEW > CASTIQUINI & OLIVEIRA LTDA - ME > UNIMED PRESIDENTE PRUDENTE"
+            'entity': "GNEW > CASTIQUINI & OLIVEIRA LTDA - ME > UNIMED PRESIDENTE PRUDENTE"
         }
         service = MagicMock()
         provider = GlpiProvider(service)

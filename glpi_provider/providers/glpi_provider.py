@@ -1,11 +1,11 @@
 from glpi_provider.models import Entity, Ticket, User
 from glpi_provider.services.glpi_service import GlpiService
-from glpi_provider.settings import BASE_URL, USER_TOKEN
+from glpi_provider.settings import BASE_URL, USER_TOKEN, TICKET_STATUS
 
 
 class GlpiProvider:
 
-    def __init__(self, service=GlpiService(BASE_URL, USER_TOKEN)) -> None:
+    def __init__(self, service=GlpiService(BASE_URL, USER_TOKEN, TICKET_STATUS)) -> None:
         self.service = service
     
     def get_entity(self, entity_id: int) -> Entity:
@@ -104,7 +104,7 @@ class GlpiProvider:
             'content': data.get("1"),
             'owner_id': data.get("5"),
             'status_id': data.get("12"),
-            'entity_id': data.get("80")
+            'entity': data.get("80")
         }
         return ticket_data
     
