@@ -5,8 +5,8 @@ from glpi_provider.settings import BASE_URL, USER_TOKEN, TICKET_STATUS
 
 class GlpiProvider:
 
-    def __init__(self, service=GlpiService(BASE_URL, USER_TOKEN, TICKET_STATUS)) -> None:
-        self.service = service
+    def __init__(self, service:GlpiService=None) -> None:
+        self.service = service if service else GlpiService(BASE_URL, USER_TOKEN, TICKET_STATUS)
     
     def get_entity(self, entity_id: int) -> Entity:
         entity_data = self._parser_entity_data(self.service.get_entity(entity_id))
