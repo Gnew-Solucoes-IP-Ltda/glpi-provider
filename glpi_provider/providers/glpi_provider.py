@@ -3,10 +3,19 @@ from glpi_provider.services.glpi_service import GlpiService
 from glpi_provider.settings import BASE_URL, USER_TOKEN, TICKET_STATUS
 
 
+class GlpiProviderException(Exception):
+
+    def __init__(self, message: str) -> None:
+        self.message = message
+
+
 class GlpiProvider:
 
     def __init__(self, service:GlpiService=None) -> None:
         self.service = service if service else GlpiService(BASE_URL, USER_TOKEN, TICKET_STATUS)
+    
+    def add_comment(self, ticket_id: int, comment: str) -> None:
+        self.service.add_comment(ticket_id, comment)
     
     def get_entity(self, entity_id: int) -> Entity:
         entity_data = self._parser_entity_data(self.service.get_entity(entity_id))
@@ -75,6 +84,7 @@ class GlpiProvider:
         return User(**user_data)
 
     def _parser_entity_data(self, data: dict) -> dict:
+        self._validate_data_before_parser(data)
         return {
             'id': data.get('id'),
             'name': data.get('name'),
@@ -89,6 +99,7 @@ class GlpiProvider:
         }
     
     def _parser_ticket_data(self, data: dict) -> tuple[dict, int]:
+        self._validate_data_before_parser(data)
         return (
             {
                 'id': data.get('id'),
@@ -99,6 +110,7 @@ class GlpiProvider:
         )
     
     def _parser_open_ticket_data(self, data: dict) -> tuple[int, int]:
+        self._validate_data_before_parser(data)
         ticket_data = {
             'id': data.get("2"),
             'content': data.get("1"),
@@ -109,9 +121,14 @@ class GlpiProvider:
         return ticket_data
     
     def _parser_user_data(self, data: dict) -> dict:
+        self._validate_data_before_parser(data)
         return {
             'id': data.get('id'),
             'last_name': data.get('realname'),
             'first_name': data.get('firstname'),
             'mobile': data.get('mobile')
         }
+
+    def _validate_data_before_parser(self, data: dict) -> None:
+        if type(data) != dict:
+            raise GlpiProviderException('Parser data error')

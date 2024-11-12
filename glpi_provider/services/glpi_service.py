@@ -64,7 +64,7 @@ class GlpiService:
         data = {
             'input': {
                 "itemtype": "Ticket",
-                "items_id": {ticket_id},
+                "items_id": ticket_id,
                 'content': comment, 
                 'is_private': False
             }
