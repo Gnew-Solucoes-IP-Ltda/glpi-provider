@@ -56,12 +56,13 @@ class GlpiProvider:
         return entities
     
     def get_location(self, id: int) -> Location:
-        location_data = self._parser_location_data(self.service.get_location(id))
-        return self._create_location(location_data)
-    
-    def get_locations(self):
-        data = self.service.get_locations()
-        return data
+        location_data = self.service.get_location(id)
+        return self._create_location(
+            {
+                'id': location_data.get('id'),
+                'name': location_data.get('name')
+            }
+        )
 
     def get_ticket(self, ticket_id: int) -> Ticket:
         ticket_data, entity_id = self._parser_ticket_data(self.service.get_ticket(ticket_id))
