@@ -1655,3 +1655,26 @@ USERS_RESPONSE = [
         ]
     }
 ]
+
+USER_SEARCH_RESPONSE = {
+    '1': 'aramaral', 
+    '2': 8, 
+    '9': 'Tatianno', 
+    '34': 'Alves'
+}
+
+USERS_SEARCH_RESPONSE = {
+    'totalcount': 1, 
+    'count': 1, 
+    'sort': [1], 
+    'order': ['ASC'], 
+    'data': [
+        {
+            '1': 'aramaral', 
+            '2': 8, 
+            '9': 'Tatianno', 
+            '34': 'Alves'
+        }
+    ], 
+    'content-range': '0-0/1'
+}

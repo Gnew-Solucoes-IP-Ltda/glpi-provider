@@ -3,7 +3,7 @@ from glpi_provider import GlpiProvider
 
 provider = GlpiProvider()
 provider.create_session()
-tickets = provider.get_open_tickets()
+print('teste')
 provider.close_session()
 
-print(tickets)
+

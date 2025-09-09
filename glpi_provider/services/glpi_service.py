@@ -10,9 +10,17 @@ class GlpiServiceException(Exception):
 
 class GlpiService:
 
-    def __init__(self, base_url: str, user_token: str, status_open: list, requests_lib: requests = requests) -> None:
+    def __init__(
+            self, 
+            base_url: str, 
+            user_token: str, 
+            status_open: list, 
+            requests_lib: requests = requests, 
+            app_token: str=None
+    ) -> None:
         self.base_url = url_transform(base_url)
         self._user_token = user_token
+        self._app_token = app_token
         self._requests = requests_lib
         self._session_token: str = None
         self._ticket_open_status = status_open
@@ -23,12 +31,28 @@ class GlpiService:
     def close_session(self) -> None:
         self._kill_session_token()
 
+    def find_location_by_name(self, name: str) -> dict:
+        url = f'{self.base_url}/apirest.php/search/Location/?forcedisplay[0]=2&criteria[0][field]=14&criteria[0][searchtype]=contains&criteria[0][value]={name}'
+        return self._get(url)
+    
+    def find_user_by_username(self, username: str) -> dict:
+        url = f'{self.base_url}/apirest.php/search/user/?forcedisplay[0]=2&forcedisplay[1]=9&forcedisplay[2]=34&criteria[0][field]=1&criteria[0][searchtype]=contains&criteria[0][value]={username}'
+        return self._get(url)
+
     def get_entity(self, entity_id: int) -> dict:
         url = f'{self.base_url}/apirest.php/entity/{entity_id}'
         return self._get(url)
     
     def get_entities(self) -> list:
         url = f'{self.base_url}/apirest.php/entity'
+        return self._get(url)
+    
+    def get_location(self, location_id) -> dict:
+        url = f'{self.base_url}/apirest.php/location/{location_id}'
+        return self._get(url)
+    
+    def get_locations(self) -> list:
+        url = f'{self.base_url}/apirest.php/location'
         return self._get(url)
 
     def get_ticket(self, ticket_id: int) -> dict:
@@ -69,7 +93,11 @@ class GlpiService:
                 'is_private': False
             }
         }
-        headers = {'Session-Token': f'{self._get_session_token()}', 'Content-Type': 'application/json'}
+        headers = {
+            'Session-Token': f'{self._get_session_token()}',
+            'App-Token': self._app_token, 
+            'Content-Type': 'application/json'
+        }
         url = f'{self.base_url}/apirest.php/ticket/{ticket_id}/ITILFollowup/'
         response = requests.post(
             url,
@@ -88,7 +116,10 @@ class GlpiService:
         if not self._session_token:
             raise GlpiServiceException('Session not initialized')
 
-        headers = {'Session-Token': f'{self._get_session_token()}'}
+        headers = {
+            'Session-Token': f'{self._get_session_token()}',
+            'App-Token': self._app_token
+        }
         response = self._requests.get(url, headers=headers)       
         return response
     
@@ -99,14 +130,17 @@ class GlpiService:
         
         response = self.get(url)
 
-        if response.status_code != 200:
+        if response.status_code not in  [200, 201, 206]:
             raise GlpiServiceException(f'Response status code {response.status_code}')
         
         return response.json()
     
     def _create_session_token(self) -> None:
         url = f'{self.base_url}/apirest.php/initSession/'
-        headers = {'Authorization': f'user_token {self._user_token}'}
+        headers = {
+            'Authorization': f'user_token {self._user_token}',
+            'App-Token': self._app_token
+        }
         response = self._requests.get(url, headers=headers)
 
         if response.status_code != 200:
@@ -126,7 +160,10 @@ class GlpiService:
 
         if self._session_token:
             url = f'{self.base_url}/apirest.php/killSession/'
-            headers = {'Session-Token': f'{self._get_session_token()}'}
+            headers = {
+                'Session-Token': f'{self._get_session_token()}',
+                'App-Token': self._app_token
+            }
             response = self._requests.get(url, headers=headers)
 
             if response.status_code != 200:
