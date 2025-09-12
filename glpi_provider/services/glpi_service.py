@@ -104,10 +104,10 @@ class GlpiService:
         
         return response.json()
 
-    def open_ticket(self, name: str, content: str, requester_id: int, entity_id: int, location_id: int=None) -> dict:
+    def open_ticket(self, data: dict) -> dict:
         url = f'{self.base_url}/apirest.php/Ticket/'
         data = {
-            'input': data
+            'input': [data]
         }
         response = self.post(
             url,
@@ -141,7 +141,6 @@ class GlpiService:
             'App-Token': self._app_token,
             'Content-Type': 'application/json'
         }
-        data = json.dumps(data)
         response = self._requests.post(url, headers=headers, data=data)       
         return response
     
