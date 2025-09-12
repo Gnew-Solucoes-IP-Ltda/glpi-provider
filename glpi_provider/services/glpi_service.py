@@ -93,16 +93,10 @@ class GlpiService:
                 'is_private': False
             }
         }
-        headers = {
-            'Session-Token': f'{self._get_session_token()}',
-            'App-Token': self._app_token, 
-            'Content-Type': 'application/json'
-        }
         url = f'{self.base_url}/apirest.php/ticket/{ticket_id}/ITILFollowup/'
-        response = requests.post(
+        response = self.post(
             url,
-            data=json.dumps(data),
-            headers=headers
+            data=json.dumps(data)
         )
         
         if response.status_code != 201:
@@ -110,7 +104,21 @@ class GlpiService:
         
         return response.json()
 
-    
+    def open_ticket(self, name: str, content: str, requester_id: int, entity_id: int, location_id: int=None) -> dict:
+        url = f'{self.base_url}/apirest.php/Ticket/'
+        data = {
+            'input': data
+        }
+        response = self.post(
+            url,
+            data=json.dumps(data)
+        )
+        
+        if response.status_code != 201:
+            raise GlpiServiceException(f'Response status code {response.status_code}')
+        
+        return response.json()
+
     def get(self, url: str) -> requests.Response:
 
         if not self._session_token:
@@ -121,6 +129,20 @@ class GlpiService:
             'App-Token': self._app_token
         }
         response = self._requests.get(url, headers=headers)       
+        return response
+
+    def post(self, url: str, data: dict) -> requests.Response:
+
+        if not self._session_token:
+            raise GlpiServiceException('Session not initialized')
+
+        headers = {
+            'Session-Token': f'{self._get_session_token()}',
+            'App-Token': self._app_token,
+            'Content-Type': 'application/json'
+        }
+        data = json.dumps(data)
+        response = self._requests.post(url, headers=headers, data=data)       
         return response
     
     def _get(self, url: str) -> dict:

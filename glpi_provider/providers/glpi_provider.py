@@ -84,6 +84,23 @@ class GlpiProvider:
             tickets.append(self._parser_open_ticket_data(data))
         
         return tickets
+
+    def open_ticket(self, name: str, content: str, requester_id: int, entity_id: int, location_id: int=None) -> dict:
+        data = {
+            'name': name,
+            'content': content,
+            'requester_id': requester_id,
+            'entities_id': entity_id,
+            'locations_id': location_id,
+            'type': 2,
+            'itilcategories_id': 198,
+            'status': 1,
+            'solution_template': 0,
+            'solutiontypes_id': 0,
+            'requesttypes_id': 1,
+            'priority': 2,
+        }
+        return self.service.open_ticket(data)
     
     def get_user(self, user_id: int) -> User:
         user_data = self._parser_user_data(self.service.get_user(user_id))
