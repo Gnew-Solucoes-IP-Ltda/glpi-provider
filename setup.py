@@ -16,7 +16,7 @@ with open("README.md", "r") as arq:
 
 setup(
     name='glpi-provider',
-    version='0.2.7',
+    version='0.2.8',
     license='MIT License',
     author='Tatianno Alves',
     long_description=readme,

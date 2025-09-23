@@ -29,6 +29,18 @@ class GlpiProvider:
     
     def add_comment(self, ticket_id: int, comment: str) -> None:
         self.service.add_comment(ticket_id, comment)
+
+    def find_entity_by_tag_inventory(self, tag: str) -> Entity:
+        entities_data = self.service.find_entity_by_tag_inventory(tag).get('data', [])
+        if len(entities_data) != 0:
+            for entity_data in entities_data:
+                parsed_data = self._parser_search_entity_data(entity_data)
+                
+                if parsed_data.get('tag') == tag:
+                    entity = self.get_entity(parsed_data.get('id'))
+                    return entity
+        
+        return None
     
     def find_location_by_name(self, name: str) -> list[Location]:
         locations_data = self.service.find_location_by_name(name)
@@ -163,6 +175,14 @@ class GlpiProvider:
             'phonenumber': data.get('phonenumber'),
             'admin_email': data.get('admin_email'),
             'admin_email_name': data.get('admin_email_name')
+        }
+
+    def _parser_search_entity_data(self, data: dict) -> dict:
+        self._validate_data_before_parser(data)
+        return {
+            'id': data.get('2'),
+            'name': data.get('1'),
+            'tag': str(data.get('8')),
         }
     
     def _parser_location_data(self, data: dict) -> dict:

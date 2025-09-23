@@ -40,7 +40,11 @@ class GlpiService:
     def find_user_by_username(self, username: str) -> dict:
         url = f'{self.base_url}/apirest.php/search/user/?forcedisplay[0]=2&forcedisplay[1]=9&forcedisplay[2]=34&criteria[0][field]=1&criteria[0][searchtype]=contains&criteria[0][value]={username}'
         return self._get(url)
-
+    
+    def find_entity_by_tag_inventory(self, tag: str) -> dict:
+        url = f'{self.base_url}/apirest.php//search/entity/?forcedisplay[0]=2&criteria[0][field]=8&criteria[0][searchtype]=contains&criteria[0][value]={tag}'
+        return self._get(url)
+    
     def get_entity(self, entity_id: int) -> dict:
         url = f'{self.base_url}/apirest.php/entity/{entity_id}'
         return self._get(url)
