@@ -1,5 +1,6 @@
 from .decorators.session import with_session
 from .models.entity import Entity
+from .models.location import Location
 from .models.ticket import Ticket
 from .models.user import User
 from .providers.glpi_provider import GlpiProvider
@@ -10,6 +11,7 @@ from .settings import BASE_URL, USER_TOKEN
 
 __all__ = [
     'Entity',
+    'Location',
     'Ticket',
     'User',
     'GlpiProvider',

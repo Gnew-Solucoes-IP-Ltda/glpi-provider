@@ -16,7 +16,8 @@ class GlpiService:
             user_token: str, 
             status_open: list, 
             requests_lib: requests = requests, 
-            app_token: str=None
+            app_token: str=None,
+            verify_ssl: bool=True
     ) -> None:
         self.base_url = url_transform(base_url)
         self._user_token = user_token
@@ -24,6 +25,7 @@ class GlpiService:
         self._requests = requests_lib
         self._session_token: str = None
         self._ticket_open_status = status_open
+        self._verify_ssl = verify_ssl
 
     def create_session(self) -> None:
         self._create_session_token()
@@ -128,7 +130,7 @@ class GlpiService:
             'Session-Token': f'{self._get_session_token()}',
             'App-Token': self._app_token
         }
-        response = self._requests.get(url, headers=headers)       
+        response = self._requests.get(url, headers=headers, verify=self._verify_ssl)       
         return response
 
     def post(self, url: str, data: dict) -> requests.Response:
@@ -141,7 +143,7 @@ class GlpiService:
             'App-Token': self._app_token,
             'Content-Type': 'application/json'
         }
-        response = self._requests.post(url, headers=headers, data=data)       
+        response = self._requests.post(url, headers=headers, data=data, verify=self._verify_ssl)       
         return response
     
     def _get(self, url: str) -> dict:
@@ -162,7 +164,7 @@ class GlpiService:
             'Authorization': f'user_token {self._user_token}',
             'App-Token': self._app_token
         }
-        response = self._requests.get(url, headers=headers)
+        response = self._requests.get(url, headers=headers, verify=self._verify_ssl)
 
         if response.status_code != 200:
             raise GlpiServiceException(f'Response status code {response.status_code}')
@@ -185,7 +187,7 @@ class GlpiService:
                 'Session-Token': f'{self._get_session_token()}',
                 'App-Token': self._app_token
             }
-            response = self._requests.get(url, headers=headers)
+            response = self._requests.get(url, headers=headers, verify=self._verify_ssl)
 
             if response.status_code != 200:
                 raise GlpiServiceException(f'Response status code {response.status_code}')

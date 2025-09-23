@@ -19,6 +19,14 @@ class GlpiProvider:
             app_token=APP_TOKEN
         )
     
+    @property
+    def session_token(self) -> str:
+        return self.service._session_token
+    
+    @session_token.setter
+    def session_token(self, value: str) -> None:
+        self.service._session_token = value
+    
     def add_comment(self, ticket_id: int, comment: str) -> None:
         self.service.add_comment(ticket_id, comment)
     
