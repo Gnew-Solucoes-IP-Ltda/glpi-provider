@@ -17,7 +17,8 @@ class GlpiService:
             status_open: list, 
             requests_lib: requests = requests, 
             app_token: str=None,
-            verify_ssl: bool=True
+            verify_ssl: bool=True,
+            timeout: int=10
     ) -> None:
         self.base_url = url_transform(base_url)
         self._user_token = user_token
@@ -26,6 +27,7 @@ class GlpiService:
         self._session_token: str = None
         self._ticket_open_status = status_open
         self._verify_ssl = verify_ssl
+        self._timeout = timeout
 
     def create_session(self) -> None:
         self._create_session_token()
@@ -134,8 +136,13 @@ class GlpiService:
             'Session-Token': f'{self._get_session_token()}',
             'App-Token': self._app_token
         }
-        response = self._requests.get(url, headers=headers, verify=self._verify_ssl)       
-        return response
+
+        try:
+            response = self._requests.get(url, headers=headers, verify=self._verify_ssl, timeout=self._timeout)       
+            return response
+        
+        except requests.exceptions.Timeout:
+            raise GlpiServiceException("Request timeout!")
 
     def post(self, url: str, data: dict) -> requests.Response:
 
@@ -147,9 +154,14 @@ class GlpiService:
             'App-Token': self._app_token,
             'Content-Type': 'application/json'
         }
-        response = self._requests.post(url, headers=headers, data=data, verify=self._verify_ssl)       
-        return response
-    
+
+        try:
+            response = self._requests.post(url, headers=headers, data=data, verify=self._verify_ssl, timeout=self._timeout)       
+            return response
+
+        except requests.exceptions.Timeout:
+            raise GlpiServiceException("Request timeout!")
+
     def _get(self, url: str) -> dict:
 
         if not self._session_token:
@@ -168,7 +180,12 @@ class GlpiService:
             'Authorization': f'user_token {self._user_token}',
             'App-Token': self._app_token
         }
-        response = self._requests.get(url, headers=headers, verify=self._verify_ssl)
+
+        try:
+            response = self._requests.get(url, headers=headers, verify=self._verify_ssl, timeout=self._timeout)
+
+        except requests.exceptions.Timeout:
+            raise GlpiServiceException("Request timeout!")
 
         if response.status_code != 200:
             raise GlpiServiceException(f'Response status code {response.status_code}')
@@ -191,8 +208,13 @@ class GlpiService:
                 'Session-Token': f'{self._get_session_token()}',
                 'App-Token': self._app_token
             }
-            response = self._requests.get(url, headers=headers, verify=self._verify_ssl)
 
+            try:
+                response = self._requests.get(url, headers=headers, verify=self._verify_ssl, timeout=self._timeout)
+
+            except requests.exceptions.Timeout:
+                raise GlpiServiceException("Request timeout!")
+            
             if response.status_code != 200:
                 raise GlpiServiceException(f'Response status code {response.status_code}')
 
