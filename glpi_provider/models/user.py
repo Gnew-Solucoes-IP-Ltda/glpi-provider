@@ -14,5 +14,5 @@ class User:
     _location_id: Optional[int] = None
 
     @property
-    def name(self) -> str:
+    def full_name(self) -> str:
         return f'{self.first_name} {self.last_name}'

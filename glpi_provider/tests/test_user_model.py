@@ -13,5 +13,5 @@ class UserTestCase(TestCase):
         }
         user = User(**received_data)
         self.assertEqual(user.id, 8)
-        self.assertEqual(user.name, 'Tatianno Alves')
+        self.assertEqual(user.full_name, 'Tatianno Alves')
         self.assertEqual(user.mobile, '+5511997799778')

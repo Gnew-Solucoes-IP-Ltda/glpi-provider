@@ -217,10 +217,12 @@ class GlpiProvider:
     def _parser_user_data(self, data: dict) -> dict:
         self._validate_data_before_parser(data)
         locations_id = data.get('locations_id', 0)
+        first_name = data.get('firstname')
+        last_name = data.get('realname')
         return {
             'id': data.get('id'),
-            'last_name': data.get('realname'),
-            'first_name': data.get('firstname'),
+            'last_name': last_name,
+            'first_name': first_name,
             'mobile': data.get('mobile'),
             'username': data.get('name'),
             '_location_id': locations_id if locations_id != 0 else None
