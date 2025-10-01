@@ -48,6 +48,14 @@ class GlpiProviderTestCase(TestCase):
         user = provider.find_user_by_username('aramaral')
         self.assertEqual(type(user), User)
     
+    def test_find_user_by_username_not_case_sensitive(self):
+        service = MagicMock()
+        service.find_user_by_username.return_value = USERS_SEARCH_RESPONSE
+        service.get_user.return_value = USER_RESPONSE
+        provider = GlpiProvider(service)
+        user = provider.find_user_by_username('Aramaral')
+        self.assertEqual(type(user), User)
+    
     def test_find_user_by_username_not_found(self):
         service = MagicMock()
         service.find_user_by_username.return_value = USERS_SEARCH_RESPONSE

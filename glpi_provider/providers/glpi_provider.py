@@ -56,7 +56,7 @@ class GlpiProvider:
             for user_data in users_data:
                 parsed_data = self._parser_search_user_data(user_data)
                 
-                if parsed_data.get('username') == username:
+                if parsed_data.get('username', ' ').lower() == username.lower():
                     user = self.get_user(parsed_data.get('id'))
                     return user
         
