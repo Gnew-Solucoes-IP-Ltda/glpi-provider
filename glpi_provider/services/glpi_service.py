@@ -64,11 +64,19 @@ class GlpiService:
         return self._get(url)
 
     def get_ticket(self, ticket_id: int) -> dict:
-        url = f'{self.base_url}/apirest.php/ticket/{ticket_id}'
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}'
+        return self._get(url)
+    
+    def get_ticket_users(self, ticket_id: int) -> list:
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/Ticket_User/'
+        return self._get(url)
+
+    def get_ticket_groups(self, ticket_id: int) -> list:
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/Group_Ticket/'
         return self._get(url)
     
     def get_tickets(self) -> list:
-        url = f'{self.base_url}/apirest.php/ticket'
+        url = f'{self.base_url}/apirest.php/Ticket'
         return self._get(url)
     
     def get_open_tickets(self) -> dict:
