@@ -1974,3 +1974,144 @@ TICKETS_OPEN_RESPONSE = {
     ],
     "content-range": "0-16/17"
 }
+
+
+ITILFOLLOWUP_RESPONSE = [
+  {
+    "id": 37646,
+    "itemtype": "Ticket",
+    "items_id": 10867,
+    "date": "2023-07-04 15:51:23",
+    "users_id": 14,
+    "users_id_editor": 0,
+    "content": "Teste",
+    "is_private": 0,
+    "requesttypes_id": 1,
+    "date_mod": "2023-07-04 15:51:23",
+    "date_creation": "2023-07-04 15:51:23",
+    "timeline_position": 4,
+    "sourceitems_id": 0,
+    "sourceof_items_id": 0,
+    "links": [
+      {
+        "rel": "Ticket",
+        "href": "https://glpi-teste.com.br/apirest.php/Ticket/10867"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/14"
+      },
+      {
+        "rel": "RequestType",
+        "href": "https://glpi-teste.com.br/apirest.php/RequestType/1"
+      }
+    ]
+  }
+]
+
+TASK_RESPONSE = [
+  {
+    "id": 80,
+    "tickets_id": 15180,
+    "taskcategories_id": 0,
+    "date": "2026-02-13 12:14:55",
+    "users_id": 8,
+    "users_id_editor": 8,
+    "content": "&lt;p&gt;TAREFA 1&lt;/p&gt;",
+    "is_private": 0,
+    "actiontime": 0,
+    "begin": None,
+    "end": None,
+    "state": 1,
+    "users_id_tech": 8,
+    "groups_id_tech": 0,
+    "date_mod": "2026-02-13 12:15:09",
+    "date_creation": "2026-02-13 12:14:55",
+    "tasktemplates_id": 0,
+    "timeline_position": 1,
+    "links": [
+      {
+        "rel": "Ticket",
+        "href": "https://glpi-teste.com.br/apirest.php/Ticket/15180"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      }
+    ]
+  }
+]
+
+SOLUTION_WITHOUT_APPROVED_RESPONSE = [
+  {
+    "id": 14,
+    "itemtype": "Ticket",
+    "items_id": 15180,
+    "solutiontypes_id": 0,
+    "solutiontype_name": None,
+    "content": "&lt;p&gt;RESOLVIDO&lt;/p&gt;",
+    "date_creation": "2026-02-13 12:20:11",
+    "date_mod": "2026-02-13 12:20:11",
+    "date_approval": None,
+    "users_id": 8,
+    "user_name": None,
+    "users_id_editor": 0,
+    "users_id_approval": 0,
+    "user_name_approval": None,
+    "status": 2,
+    "itilfollowups_id": None,
+    "links": [
+      {
+        "rel": "Ticket",
+        "href": "https://glpi-teste.com.br/apirest.php/Ticket/15180"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      }
+    ]
+  }
+]
+
+SOLUTION_APPROVED_RESPONSE = [
+  {
+    "id": 14,
+    "itemtype": "Ticket",
+    "items_id": 15180,
+    "solutiontypes_id": 0,
+    "solutiontype_name": None,
+    "content": "&lt;p&gt;RESOLVIDO&lt;/p&gt;",
+    "date_creation": "2026-02-13 12:20:11",
+    "date_mod": "2026-02-13 12:20:11",
+    "date_approval": "2026-02-13 12:20:39",
+    "users_id": 8,
+    "user_name": None,
+    "users_id_editor": 0,
+    "users_id_approval": 8,
+    "user_name_approval": None,
+    "status": 3,
+    "itilfollowups_id": None,
+    "links": [
+      {
+        "rel": "Ticket",
+        "href": "https://glpi-teste.com.br/apirest.php/Ticket/15180"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      },
+      {
+        "rel": "User",
+        "href": "https://glpi-teste.com.br/apirest.php/User/8"
+      }
+    ]
+  }
+]

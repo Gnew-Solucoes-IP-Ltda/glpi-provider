@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
+from datetime import datetime
 from glpi_provider.models import Entity, Location, Ticket, User
 from glpi_provider.providers.glpi_provider import GlpiProvider
 from glpi_provider.tests.constants.entities_responses import (
@@ -12,9 +13,12 @@ from glpi_provider.tests.constants.locations_responses import (
     LOCATIONS_SEARCH_RESPONSE
 )
 from glpi_provider.tests.constants.tickets_responses import (
+    ITILFOLLOWUP_RESPONSE,
+    SOLUTION_WITHOUT_APPROVED_RESPONSE,
+    TASK_RESPONSE,
     TICKET_REPONSE, 
     TICKETS_RESPONSE, 
-    TICKET_OPEN_RESPONSE
+    TICKET_OPEN_RESPONSE,
 )
 from glpi_provider.tests.constants.users_responses import (
     USER_RESPONSE, 
@@ -190,4 +194,41 @@ class GlpiProviderTestCase(TestCase):
         location_data = provider._parser_location_data(LOCATION_SEARCH_RESPONSE)
         self.assertDictEqual(location_data, expected_data)
     
+    def test_parse_itilfollowup_data(self):
+        expected_data = {
+            "id": 37646,
+            "content": "Teste",
+            "date_creation": "2023-07-04 15:51:23",
+            "users_id": 14,
+        }
+        service = MagicMock()
+        provider = GlpiProvider(service)
+        itilfollowup_data = provider._parser_itilfollowup_data(ITILFOLLOWUP_RESPONSE[0])
+        self.assertDictEqual(itilfollowup_data, expected_data)
+    
+    def test_parse_task_data(self):
+        expected_data ={
+            "id": 80,
+            "content": "&lt;p&gt;TAREFA 1&lt;/p&gt;",
+            "date_creation": "2026-02-13 12:14:55",
+            "users_id": 8,
+        }
+        service = MagicMock()
+        provider = GlpiProvider(service)
+        task_data = provider._parser_task_data(TASK_RESPONSE[0])
+        self.assertDictEqual(task_data, expected_data)
+    
+    def test_parse_solution_data(self):
+        expected_data ={
+            "id": 14,
+            "content": "&lt;p&gt;RESOLVIDO&lt;/p&gt;",
+            "date_creation": "2026-02-13 12:20:11",
+            "users_id": 8,
+        }
+        service = MagicMock()
+        provider = GlpiProvider(service)
+        solution_data = provider._parser_solution_data(SOLUTION_WITHOUT_APPROVED_RESPONSE[0])
+        self.assertDictEqual(solution_data, expected_data)
+
+        
     

@@ -67,6 +67,18 @@ class GlpiService:
         url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}'
         return self._get(url)
     
+    def get_ticket_followups(self, ticket_id: int) -> list:
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/ITILFollowup'
+        return self._get(url)
+    
+    def get_ticket_tasks(self, ticket_id: int) -> list:
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/TicketTask'
+        return self._get(url)
+    
+    def get_ticket_solutions(self, ticket_id: int) -> list:
+        url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/ITILSolution'
+        return self._get(url)
+    
     def get_ticket_users(self, ticket_id: int) -> list:
         url = f'{self.base_url}/apirest.php/Ticket/{ticket_id}/Ticket_User/'
         return self._get(url)

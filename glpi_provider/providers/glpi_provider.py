@@ -1,4 +1,4 @@
-from glpi_provider.models import Entity, Location, Ticket, User
+from glpi_provider.models import Entity, Location, Ticket, User, ItilFollowup, Task, Solution
 from glpi_provider.services.glpi_service import GlpiService
 from glpi_provider.settings import BASE_URL, APP_TOKEN, USER_TOKEN, TICKET_STATUS
 
@@ -86,7 +86,16 @@ class GlpiProvider:
 
     def get_ticket(self, ticket_id: int) -> Ticket:
         ticket_data, entity_id = self._parser_ticket_data(self.service.get_ticket(ticket_id))
-        return self._create_ticket(ticket_data, entity_id)
+        itilfollowup_data = [self._parser_itilfollowup_data(data) for data in self.service.get_ticket_followups(ticket_id)]
+        task_data = [self._parser_task_data(data) for data in self.service.get_ticket_tasks(ticket_id)]
+        solution_data = [self._parser_solution_data(data) for data in self.service.get_ticket_solutions(ticket_id)]
+        return self._create_ticket(
+            ticket_data=ticket_data, 
+            entity_id=entity_id,
+            itilfollowup_data=itilfollowup_data, 
+            task_data=task_data, 
+            solution_data=solution_data
+        )
     
     def get_tickets(self) -> list[Ticket]:
         tickets = []
@@ -149,12 +158,43 @@ class GlpiProvider:
     def _create_location(self, location_data: dict) -> Location:
         return Location(**location_data)
     
-    def _create_ticket(self, ticket_data: dict, entity_id: int, user_id: int=None) -> Ticket:
+    def _create_ticket(
+        self, 
+        ticket_data: dict, 
+        entity_id: int,  
+        user_id: int=None, 
+        itilfollowup_data: list=[], 
+        task_data: list=[], 
+        solution_data: list=[]
+    ) -> Ticket:
         entity = self.get_entity(entity_id)
         user = self.get_user(user_id) if user_id else None
         ticket_data['entity'] = entity
         ticket_data['user'] = user
-        return Ticket(**ticket_data)
+        ticket = Ticket(**ticket_data)
+
+        for data in itilfollowup_data:
+            itilfollowup = self._create_itilfollowup(data)
+            ticket.add_itil_followup(itilfollowup)
+        
+        for data in task_data:
+            task = self._create_task(data)
+            ticket.add_task(task)
+        
+        for data in solution_data:
+            solution = self._create_solution(data)
+            ticket.add_solution(solution)
+        
+        return ticket
+
+    def _create_itilfollowup(self, itilfollowup_data: dict) -> ItilFollowup:
+        return ItilFollowup(**itilfollowup_data)
+    
+    def _create_task(self, task_data: dict) -> Task:
+        return Task(**task_data)
+    
+    def _create_solution(self, solution_data: dict) -> Solution:
+        return Solution(**solution_data)
     
     def _create_user(self, user_data: dict) -> User:
         user = User(**user_data)
@@ -193,6 +233,15 @@ class GlpiProvider:
             'id': data.get('2'),
             'name': data.get('1')
         }
+    
+    def _parser_itilfollowup_data(self, data: dict) -> dict:
+        return self._generic_parser_data(data)
+    
+    def _parser_task_data(self, data: dict) -> dict:
+        return self._generic_parser_data(data)
+    
+    def _parser_solution_data(self, data: dict) -> dict:
+        return self._generic_parser_data(data)
     
     def _parser_ticket_data(self, data: dict) -> tuple[dict, int]:
         self._validate_data_before_parser(data)
@@ -237,6 +286,15 @@ class GlpiProvider:
             'last_name': data.get('34'),
             'first_name': data.get('9'),
             'username': data.get('1')
+        }
+    
+    def _generic_parser_data(self, data: dict) -> dict:
+        self._validate_data_before_parser(data)
+        return {
+            'id': data.get('id'),
+            'content': data.get('content'),
+            'date_creation': data.get('date_creation'),
+            'users_id': data.get('users_id')
         }
 
     def _validate_data_before_parser(self, data: dict) -> None:
