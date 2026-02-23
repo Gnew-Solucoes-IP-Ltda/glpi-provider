@@ -143,7 +143,7 @@ class GlpiProviderTestCase(TestCase):
         self.assertEqual(len(tickets), 16)
 
     def test_parser_entity_data(self):
-        expected_data = {'id': 6, 'content': None, 'date_creation': '2019-03-23 11:15:14'}
+        expected_data = {'id': 6, 'content': None, 'date_creation': '2019-03-23 11:15:14', 'status': None}
         service = MagicMock()
         provider = GlpiProvider(service)
         ticket_data, entity_id = provider._parser_ticket_data(ENTITY_RESPONSE)

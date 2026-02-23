@@ -30,6 +30,7 @@ class TicketTestCase(TestCase):
             'entity': entity,
             'content': '&lt;p&gt;***** RECORRENTE****&lt;/p&gt;&lt;p&gt;\xa0&lt;/p&gt;&lt;p&gt;FAVOR VERIFICAR QUEDA DE LIGAÇÕES (ESTE É O TERCEIRO CHAMADO ABERTO PELO MOTIVO)&lt;/p&gt;', 
             'date_creation': '2024-10-21 15:31:46', 
+            'status': 2,
             'user': None
         }
         ticket = Ticket(**ticket_data)

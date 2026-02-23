@@ -250,6 +250,7 @@ class GlpiProvider:
                 'id': data.get('id'),
                 'content': data.get('content'),
                 'date_creation': data.get('date_creation'),
+                'status': data.get('status'),
             },
             data.get('entities_id')
         )
