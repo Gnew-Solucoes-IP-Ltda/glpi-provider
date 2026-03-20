@@ -1,4 +1,4 @@
-from glpi_provider.models import Entity, Location, Ticket, User, ItilFollowup, Task, Solution
+from glpi_provider.models import Entity, Location, Ticket, User, ItilFollowup, Task, Solution, ItemHistory
 from glpi_provider.services.glpi_service import GlpiService
 from glpi_provider.settings import BASE_URL, APP_TOKEN, USER_TOKEN, TICKET_STATUS
 
@@ -132,6 +132,22 @@ class GlpiProvider:
             'priority': 2,
         }
         return self.service.open_ticket(data)
+
+    def get_last_item_history(self, ticket_id: int) -> ItemHistory:
+        ticket = self.get_ticket(ticket_id)
+        item_history = ticket.get_last_item_history()
+
+        if not item_history:
+            return None
+        
+        user = self.get_user(item_history.users_id)
+        return ItemHistory(
+            id=item_history.id,
+            content=item_history.content,
+            date_creation=item_history.date_creation,
+            user=user,
+            type=item_history.type
+        )
     
     def get_user(self, user_id: int) -> User:
         user_data = self._parser_user_data(self.service.get_user(user_id))
