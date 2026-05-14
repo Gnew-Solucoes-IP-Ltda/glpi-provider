@@ -114,7 +114,7 @@ class GlpiProvider:
         
         return tickets
 
-    def open_ticket(self, name: str, content: str, requester_id: int, entity_id: int, location_id: int=None, group_assign_id: int=0, itilcategories_id: int=198) -> dict:
+    def open_ticket(self, name: str, content: str, requester_id: int, entity_id: int, location_id: int=None, group_assign_id: int=0, itilcategories_id: int=198, requesttypes_id: int=1) -> dict:
         data = {
             'name': name,
             'content': content,
@@ -128,7 +128,7 @@ class GlpiProvider:
             'status': 1,
             'solution_template': 0,
             'solutiontypes_id': 0,
-            'requesttypes_id': 1,
+            'requesttypes_id': requesttypes_id,
             'priority': 2,
         }
         return self.service.open_ticket(data)

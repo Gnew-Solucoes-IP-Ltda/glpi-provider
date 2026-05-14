@@ -190,7 +190,7 @@ class GlpiService:
         response = self.get(url)
 
         if response.status_code not in  [200, 201, 206]:
-            raise GlpiServiceException(f'Response status code {response.status_code}')
+            raise GlpiServiceException(f'Response status code {response.status_code} {response.text}')
         
         return response.json()
     
@@ -208,7 +208,7 @@ class GlpiService:
             raise GlpiServiceException("Request timeout!")
 
         if response.status_code != 200:
-            raise GlpiServiceException(f'Response status code {response.status_code}')
+            raise GlpiServiceException(f'Response status code {response.status_code} {response.text}')
 
         self._session_token = response.json().get('session_token')
     
